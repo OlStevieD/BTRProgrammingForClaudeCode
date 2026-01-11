@@ -1,0 +1,10 @@
+# Agent audits will be saved here
+
+This folder contains output from BTR coding agents.
+
+Files are named: `[date]-[agent].md`
+
+Examples:
+- `2025-01-11-security.md`
+- `2025-01-11-performance.md`
+- `2025-01-11-review.md`
