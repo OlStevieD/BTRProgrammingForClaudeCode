@@ -41,7 +41,7 @@ Work through discovery until the Entry Point is clear, then create `docs/BTR.md`
 ### Clone as a project template
 
 ```bash
-git clone https://github.com/OlStevieD/BTRProgrammingForClaudeCode.git my-project
+git clone https://github.com/OlStevieD/btr-framework.git my-project
 cd my-project
 
 # Remove the template's git history and start fresh
@@ -106,7 +106,7 @@ Review
 ## What's Included
 
 ```text
-BTRProgrammingForClaudeCode/
+btr-framework/
 ├── README.md
 ├── CLAUDE.md                         # Legacy Claude Code project instructions
 ├── docs/
