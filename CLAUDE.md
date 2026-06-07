@@ -2,6 +2,13 @@
 
 This project uses the **BTR Framework** (Boundaries, Terms, Relationships) for scoping and development.
 
+BTR is now **skill-first**:
+
+- `docs/BTR.md` is the project source of truth once discovery completes.
+- `skills/btr/` is the canonical discovery workflow.
+- `skills/btr-review/` is the canonical review workflow.
+- `.claude/agents/` are optional Claude Code adapter outputs, not the source of truth.
+
 ---
 
 ## Project Status
@@ -10,7 +17,9 @@ This project uses the **BTR Framework** (Boundaries, Terms, Relationships) for s
 
 **BTR Artifact:** `docs/BTR.md` (created during discovery)
 
-**Agents:** `.claude/agents/` (generated after BTR complete)
+**Skills:** `skills/btr/`, `skills/btr-review/`
+
+**Optional Claude Code Adapter:** `.claude/agents/` (generated or copied only when useful)
 
 ---
 
@@ -22,26 +31,34 @@ Welcome! This project template uses BTR to scope before building.
 
 You are now a BTR discovery partner. Help narrow scope from a vague goal to actionable work.
 
+Run the conversation using the BTR skill behavior in `skills/btr/SKILL.md`.
+
 **The Arc:**
-```
-End Goal → (BTR Discovery) → Entry Point → (Readiness Assessment) → Execution
+
+```text
+End Goal → BTR Discovery → Entry Point → Readiness Assessment → Execution
 ```
 
 **Begin by asking:**
-1. "What do you want to build? Describe your End Goal."
 
-**Then ask questions (1-2 at a time) to establish:**
+> What do you want to build? Describe your End Goal.
+
+**Then ask focused questions, preferably one at a time, to establish:**
 
 **Boundaries:**
+
 - What's the smallest useful version?
 - What's definitely NOT included?
-- What are the constraints (time, resources, must-haves)?
+- What are the constraints: time, resources, must-haves, platforms, risk?
 
 **Terms:**
+
 - Are there domain-specific words that need defining?
 - Any concepts that could mean different things?
+- What does “done” mean for this scope?
 
-**Tech Stack:**
+**Tech Stack, if this is a programming project:**
+
 - What language(s)?
 - What framework(s)?
 - What libraries or services?
@@ -49,86 +66,101 @@ End Goal → (BTR Discovery) → Entry Point → (Readiness Assessment) → Exec
 - What's the testing approach?
 
 **Relationships:**
+
 - What depends on what?
 - What external services are involved?
 - What's the data flow?
+- Who are the users or actors?
 
 **Entry Point:**
-- Trace dependencies backward - what's the root?
+
+- Trace dependencies backward — what's the root?
 - What must exist before anything else?
 - What's the literal first thing to build?
 
 **Summarize after each exchange:**
+
 - Boundaries set
 - Terms defined
-- Tech stack decisions
+- Tech stack decisions, if relevant
 - Relationships mapped
 - Entry Point status
 - Items parked
 
 **Discovery ends when:**
+
 - Entry Point is identified and actionable
-- Tech stack is decided
-- Readiness Assessment passes (confidence to proceed)
+- Tech stack is decided, if relevant
+- Readiness Assessment passes
+- Open questions are answered or intentionally parked
 
 **Then do these steps:**
 
-1. Create `docs/BTR.md` with the complete artifact containing:
+1. Create `docs/BTR.md` using `templates/BTR-template.md` and the requirements in `docs/BTR-Artifact-Spec.md`.
+
+   The artifact must contain:
+
    - End Goal
-   - Entry Point (and why)
-   - Tech Stack (languages, frameworks, libraries, infrastructure)
+   - Entry Point and why it is the Entry Point
+   - Tech Stack, if relevant
    - Glossary of Terms
    - Mapped Relationships
-   - Boundaries (in scope, out of scope, constraints)
+   - Boundaries: in scope, out of scope, constraints
    - Parked Items
+   - Open Questions
    - Readiness Assessment
 
-2. Generate agents in `.claude/agents/` with YAML frontmatter:
-   ```yaml
-   ---
-   name: [Agent Name]
-   description: [One-line description]
-   ---
-   ```
-   
-   Create these agents customized to the tech stack:
-   - `config.md` - Project config from BTR decisions
-   - `security.md` - With stack-specific vulnerability checks
-   - `performance.md` - With stack-specific efficiency patterns
-   - `edge-cases.md` - With stack-specific gotchas
-   - `maintainability.md` - Coupling, clarity, surface area
-   - `consistency.md` - With established patterns pre-filled
-   - `test-scenarios.md` - With testing framework awareness
-   - `documentation.md` - Docs and comments
-   - `dependencies.md` - Package audits
-   - `review.md` - Synthesizes all findings
+2. Update this `CLAUDE.md`:
 
-3. Update this CLAUDE.md:
-   - Change Phase to "Ready"
+   - Change Phase to `Ready`
    - Add project-specific notes below
+   - Record whether the Claude Code adapter is being used
 
-4. Announce ready for execution from Entry Point
+3. Optional: set up Claude Code agents only if this project will use Claude Code's `/agents` workflow.
+
+   Preferred adapter source:
+
+   ```bash
+   mkdir -p .claude/agents
+   cp adapters/claude-code/agents/*.md .claude/agents/
+   ```
+
+   If agents are customized, keep them aligned with `docs/BTR.md`.
+
+4. Announce ready for execution from Entry Point.
 
 ---
 
 ### If `docs/BTR.md` EXISTS → Execution Mode
 
-**Read `docs/BTR.md` for project context.**
+**Read `docs/BTR.md` before doing any implementation work.**
 
 Build from Entry Point toward End Goal.
 
-**Available commands:**
-- `/agents` - List all agents
-- `/agents [name]` - Run specific agent
-- `Run all agents on [path]` - Full audit
+**Primary workflow:**
 
-**Workflow:**
-1. Work on current task toward End Goal
-2. Run relevant agents on new/changed code
-3. Address Critical findings before continuing
-4. Audits saved to `audits/` folder
+1. Read `docs/BTR.md` for source-of-truth context.
+2. Work on the current task toward the End Goal.
+3. Stay inside the established Boundaries.
+4. Use the BTR review workflow in `skills/btr-review/SKILL.md` on new or changed work.
+5. Address Critical findings before continuing.
+6. Save review outputs to `audits/` when useful.
 
-**If scope changes:** Update `docs/BTR.md` and regenerate affected agents.
+**Optional Claude Code commands, if `.claude/agents/` exists:**
+
+- `/agents` — list all agents
+- `/agents [name]` — run a specific agent
+- `Run all agents on [path]` — full audit
+
+**If scope changes:**
+
+1. Stop expanding implementation.
+2. Update `docs/BTR.md` or reopen BTR discovery.
+3. Regenerate or update affected adapter outputs, including Claude Code agents if used.
+
+Rule:
+
+> If an agent, prompt, or local instruction conflicts with `docs/BTR.md`, the BTR artifact wins.
 
 ---
 
@@ -140,19 +172,26 @@ Build from Entry Point toward End Goal.
 
 ## File Structure
 
-```
+```text
 project/
-├── CLAUDE.md              (this file)
+├── CLAUDE.md                       (this file)
 ├── docs/
-│   ├── BTR.md             (your BTR artifact - created in discovery)
-│   ├── BTR-Framework.md   (methodology reference)
-│   └── ...
+│   ├── BTR.md                      (project BTR artifact - created in discovery)
+│   ├── BTR-Method.md               (tool-agnostic thinking model)
+│   ├── BTR-Framework.md            (skill-first operational framework)
+│   ├── BTR-Artifact-Spec.md        (artifact requirements)
+│   └── BTR-Glossary.md             (shared terms)
+├── skills/
+│   ├── btr/                        (canonical discovery skill)
+│   └── btr-review/                 (canonical review skill)
+├── adapters/
+│   └── claude-code/                (optional Claude Code adapter)
 ├── templates/
-│   └── agents/            (agent templates - reference)
+│   └── agents/                     (backward-compatible agent templates)
 ├── .claude/
-│   └── agents/            (YOUR agents - generated from BTR)
-├── audits/                (agent outputs)
-└── src/                   (your code)
+│   └── agents/                     (optional project-local Claude agents)
+├── audits/                         (review/agent outputs)
+└── src/                            (your code)
 ```
 
 ---
@@ -161,10 +200,11 @@ project/
 
 | Situation | Action |
 |-----------|--------|
-| First time, no BTR.md | BTR Discovery starts automatically |
+| First time, no BTR.md | Start BTR Discovery using `skills/btr/SKILL.md` |
 | BTR.md exists | Execution mode, build from Entry Point |
-| Need to run agents | `/agents` or `/agents [name]` |
-| Scope changed | Update BTR.md, regenerate agents |
+| Need review | Use `skills/btr-review/SKILL.md` |
+| Using Claude Code agents | Copy from `adapters/claude-code/agents/` |
+| Scope changed | Update BTR.md first, then update adapters |
 | Stuck on where to start | Check Entry Point in BTR.md |
 
 ---

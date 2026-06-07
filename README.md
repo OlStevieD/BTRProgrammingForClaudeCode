@@ -1,199 +1,354 @@
-# BTR Programming for Claude Code
+# BTR Framework
 
-A project template that combines the **BTR Framework** (Boundaries, Terms, Relationships) with **AI coding agents** for Claude Code.
+**Boundaries, Terms, Relationships** — a skill-first framework for turning ambiguous ideas into executable AI-assisted development work.
 
-**Clone → Init → Build**
+BTR has two layers:
+
+1. **The Method** — the tool-agnostic thinking model: start with an End Goal, work backward through Boundaries, Terms, and Relationships, identify the Entry Point, then execute forward.
+2. **The Framework** — the reusable project structure, skills, templates, review lenses, and optional runtime adapters that apply the method in real projects.
+
+This repository began as **BTR Programming for Claude Code**. It now treats Claude Code agents as one adapter around a more portable BTR core.
+
+**End Goal → BTR Discovery → Entry Point → Readiness Assessment → Execution**
 
 ---
 
 ## What This Is
 
-A starter template for new programming projects that:
+A reusable framework for AI-assisted development that:
 
-1. **Starts with BTR Discovery** - Claude guides you through scoping before you write code
-2. **Generates Custom Agents** - Code review agents tailored to your tech stack
-3. **Maintains Quality** - Agents catch security, performance, and edge case issues as you build
+1. **Starts with BTR Discovery** — clarify scope before building.
+2. **Creates durable context** — write a `docs/BTR.md` artifact that survives sessions, models, and tools.
+3. **Uses skills as the primary runtime surface** — the method lives in reusable procedures, not one tool's agent format.
+4. **Keeps agents as optional adapters** — Claude Code agents and other runtime-specific prompts can still be generated from the same BTR source of truth.
+5. **Maintains quality with review lenses** — security, performance, edge cases, maintainability, consistency, tests, documentation, dependencies, and synthesis.
 
 ---
 
 ## Quick Start
 
+### Skill-first use
+
+Use the BTR skill with any capable AI assistant or agent runtime:
+
+```text
+Use the BTR method to scope this project before implementation.
+End Goal: <describe what you want to build>
+```
+
+Work through discovery until the Entry Point is clear, then create `docs/BTR.md` using `templates/BTR-template.md`.
+
+### Clone as a project template
+
 ```bash
-# Clone the template
-git clone https://github.com/[your-username]/BTRProgrammingForClaudeCode.git my-project
+git clone https://github.com/OlStevieD/BTRProgrammingForClaudeCode.git my-project
 cd my-project
 
 # Remove the template's git history and start fresh
 rm -rf .git
 git init
+```
 
-# Open in Claude Code
+Then run BTR discovery with your AI tool of choice.
+
+### Claude Code adapter use
+
+Claude Code support still exists, but it is now framed as an adapter:
+
+```bash
+mkdir -p .claude/agents
+cp adapters/claude-code/agents/*.md .claude/agents/
 claude .
 ```
 
-Claude automatically enters BTR Discovery mode. Work through the prompts to define your project scope and tech stack.
+If generated agents conflict with `docs/BTR.md`, the BTR artifact wins.
 
 ---
 
 ## The Workflow
 
-```
-Clone Template
-      │
-      ▼
-Open Claude Code
-      │
-      ▼
-BTR Discovery (automatic)
-  • Define End Goal
-  • Set Boundaries  
+```text
+End Goal
+  │
+  ▼
+BTR Discovery
+  • Define the End Goal
+  • Set Boundaries
   • Establish Terms
-  • Choose Tech Stack
   • Map Relationships
-  • Find Entry Point
-      │
-      ▼
-Agents Generated
-  • Customized to your stack
-  • Available via /agents
-      │
-      ▼
+  • Identify the Entry Point
+  │
+  ▼
+Readiness Assessment
+  • Is the Entry Point actionable?
+  • Are major terms and dependencies clear?
+  • Are open questions answered or intentionally parked?
+  │
+  ▼
+BTR Artifact
+  • Create/update docs/BTR.md
+  • Treat it as source of truth
+  │
+  ▼
 Execution
-  • Build from Entry Point
-  • Agents review your code
-  • Iterate toward End Goal
+  • Build from the Entry Point
+  • Stay inside Boundaries
+  • Update BTR if scope changes
+  │
+  ▼
+Review
+  • Apply BTR review lenses
+  • Optionally use runtime-specific agents
 ```
 
 ---
 
 ## What's Included
 
-```
+```text
 BTRProgrammingForClaudeCode/
-├── CLAUDE.md                 # Project config - triggers BTR mode
-├── README.md                 # This file
-├── .gitignore               
+├── README.md
+├── CLAUDE.md                         # Legacy Claude Code project instructions
 ├── docs/
-│   ├── BTR-Framework.md      # Full BTR methodology
-│   ├── BTR-Glossary.md       # Term definitions
-│   ├── BTR-Artifact-Spec.md  # What a complete BTR artifact contains
-│   └── Agent-Framework.md    # How the agent system works
+│   ├── BTR-Method.md                 # Tool-agnostic BTR thinking model
+│   ├── BTR-Framework.md              # Skill-first operational framework
+│   ├── BTR-Artifact-Spec.md          # What a complete BTR artifact contains
+│   ├── BTR-Glossary.md               # Term definitions
+│   └── Agent-Framework.md            # Legacy / adapter-specific agent model
+├── skills/
+│   ├── btr/
+│   │   ├── SKILL.md                  # Core BTR discovery skill
+│   │   ├── references/               # Method/framework/spec/glossary copies
+│   │   └── templates/
+│   │       └── BTR-template.md
+│   └── btr-review/
+│       ├── SKILL.md                  # BTR-aware review workflow
+│       └── references/               # Review lenses copied from agent templates
+├── adapters/
+│   └── claude-code/
+│       ├── README.md
+│       └── agents/                   # Claude Code-specific agent adapter
 ├── templates/
-│   ├── BTR-template.md       # Template for your BTR artifact
-│   └── agents/               # Agent templates (copied to .claude/)
-│       ├── config.md
-│       ├── security.md
-│       ├── performance.md
-│       ├── edge-cases.md
-│       ├── maintainability.md
-│       ├── consistency.md
-│       ├── test-scenarios.md
-│       ├── documentation.md
-│       ├── dependencies.md
-│       └── review.md
-└── audits/                   # Agent outputs go here
-    └── .gitkeep
+│   ├── BTR-template.md               # Backward-compatible artifact template
+│   └── agents/                       # Backward-compatible Claude Code templates
+└── audits/                           # Review/agent outputs
 ```
+
+---
+
+## Method vs Framework
+
+### Method
+
+The **method** is the conceptual procedure.
+
+It answers:
+
+> How does BTR think?
+
+Read: [`docs/BTR-Method.md`](docs/BTR-Method.md)
+
+It covers:
+
+- End Goal
+- Entry Point
+- Boundaries
+- Terms
+- Relationships
+- unknown-unknowns → known-unknowns → known-knowns
+- readiness-gated execution
+- failure modes
+
+The method is stable, philosophical, and tool-agnostic.
+
+### Framework
+
+The **framework** is the operational package around the method.
+
+It answers:
+
+> How do we apply BTR in AI-assisted development workflows?
+
+Read: [`docs/BTR-Framework.md`](docs/BTR-Framework.md)
+
+It covers:
+
+- skill-first architecture
+- repo layout
+- artifact conventions
+- review lenses
+- runtime adapters
+- migration from generated agents
+- extension rules
+
+The framework is the usable toolkit layer.
+
+---
+
+## Skills
+
+### `skills/btr/`
+
+The core BTR discovery skill.
+
+Use it to:
+
+- clarify ambiguous goals
+- establish Boundaries, Terms, and Relationships
+- identify the Entry Point
+- decide whether the project is ready for execution
+- create or update `docs/BTR.md`
+
+### `skills/btr-review/`
+
+The BTR-aware review skill.
+
+Use it after implementation begins to check work against:
+
+- the BTR artifact
+- project boundaries
+- defined terms
+- dependency relationships
+- security, performance, edge-case, maintainability, consistency, test, documentation, dependency, and synthesis lenses
+
+---
+
+## Adapters
+
+Adapters translate the canonical BTR method and skills into runtime-specific surfaces.
+
+Currently included:
+
+- `adapters/claude-code/` — preserves the original Claude Code agent workflow.
+
+Future adapters could include:
+
+- Hermes install/export layout
+- Codex prompt packs
+- OpenCode prompts
+- bootstrap scripts for project-local BTR artifacts
+
+Adapters should not redefine the BTR method. They should implement it for a specific runtime.
 
 ---
 
 ## After BTR Discovery
 
-Once you complete BTR discovery, your project will have:
+Once discovery completes, a project should have:
 
-```
+```text
 your-project/
-├── CLAUDE.md                 # Updated with your project context
 ├── docs/
-│   └── BTR.md                # Your BTR artifact (scope, stack, entry point)
-├── .claude/
-│   └── agents/               # Agents customized to YOUR stack
-│       ├── config.md         # Your tech stack, terms, boundaries
-│       ├── security.md       # With stack-specific checks
-│       └── ...
-├── audits/                   # Agent findings
-└── src/                      # Your code (structure defined in BTR)
+│   └── BTR.md                # Source of truth: scope, stack, terms, relationships, Entry Point
+├── src/                      # Structure defined by the BTR artifact
+├── tests/                    # Verification strategy defined by scope
+├── audits/                   # Optional review outputs
+└── .claude/agents/           # Optional, only when using the Claude Code adapter
 ```
+
+`docs/BTR.md` is the durable context. Generated agents, prompts, and review outputs are secondary.
 
 ---
 
-## Using Agents
+## Using Claude Code Agents
 
-After setup, agents are available via `/agents` command:
+The original agent workflow is still supported.
 
 ```bash
-/agents                    # List all agents
-/agents security          # Run security agent
-/agents review            # Synthesize all findings
-
-# Or natural language
-"Run all agents on src/"
-"Run security and edge-cases on the changed files"
-"Read audits and implement critical fixes"
+mkdir -p .claude/agents
+cp adapters/claude-code/agents/*.md .claude/agents/
 ```
 
----
+Then in Claude Code:
 
-## The BTR Framework
+```text
+/agents
+/agents security
+/agents review
+Run all agents on src/
+Run security and edge-cases on the changed files
+Read audits and implement critical fixes
+```
 
-**BTR = Boundaries, Terms, Relationships**
+But the governing rule is now:
 
-A methodology for scoping AI interactions. Instead of diving into code with a vague idea, BTR helps you:
-
-1. **Start with End Goal** - What are you actually building?
-2. **Work Backward** - What must exist before what?
-3. **Find Entry Point** - Where does building actually start?
-4. **Assess Readiness** - Do you have enough to begin?
-
-Read the full methodology: [docs/BTR-Framework.md](docs/BTR-Framework.md)
+> Agents are adapter outputs. `docs/BTR.md` is the source of truth.
 
 ---
 
 ## Why This Exists
 
 AI-generated code often suffers from:
-- Local solutions without global coherence
-- Inconsistent patterns across files
-- Missed edge cases
-- Security oversights
 
-BTR + Agents addresses this by:
-- **Scoping first** - Know what you're building before you build
-- **Stack-specific review** - Agents know your framework's gotchas
-- **Continuous quality** - Review as you go, not just at the end
+- local solutions without global coherence
+- inconsistent patterns across files
+- missed edge cases
+- security oversights
+- premature execution from vague prompts
+- context loss when sessions or models change
+
+BTR addresses this by:
+
+- **scoping first** — know what you are building before you build
+- **curating context** — Boundaries define what matters, Terms define meaning, Relationships define dependencies
+- **writing durable artifacts** — context survives token limits and model switches
+- **starting from the Entry Point** — execution begins at the root dependency
+- **reviewing against scope** — quality checks stay tied to the agreed artifact
 
 ---
 
 ## Customization
 
-### Adding Stack-Specific Checks
+### Add stack-specific review checks
 
-Edit agents in `.claude/agents/` to add checks for your specific technologies.
+Edit or extend the review lenses in:
 
-### Skipping BTR Discovery
-
-If you already know your scope, you can:
-1. Create `docs/BTR.md` manually using `templates/BTR-template.md`
-2. Run: `Read docs/BTR.md and generate agents`
-
-### For Existing Projects
-
-If adding to an existing codebase, use:
+```text
+skills/btr-review/references/
 ```
-Read templates/agents/config.md and set up agents for this project
+
+If you are using Claude Code agents, also update or regenerate:
+
+```text
+adapters/claude-code/agents/
 ```
+
+### Skip discovery when scope is already known
+
+If you already know your scope:
+
+1. Create `docs/BTR.md` manually using `templates/BTR-template.md`.
+2. Run a readiness check against `docs/BTR.md`.
+3. Begin execution only if the Entry Point is actionable.
+
+### Add another runtime
+
+Create a new adapter directory:
+
+```text
+adapters/<runtime>/
+```
+
+Keep reusable method/workflow content in `skills/`; keep runtime-specific prompts, agents, scripts, or instructions in the adapter.
 
 ---
 
 ## License
 
-MIT - Use freely, attribution appreciated.
+MIT — use freely, attribution appreciated.
 
 ---
 
 ## Contributing
 
 Improvements welcome. The framework evolves through use.
+
+When contributing, preserve the split:
+
+- Method changes belong in `docs/BTR-Method.md`.
+- Framework/workflow changes belong in `docs/BTR-Framework.md`.
+- Reusable AI procedures belong in `skills/`.
+- Runtime-specific behavior belongs in `adapters/`.
 
 ---
 
